@@ -1,0 +1,1 @@
+# Assignments of the CS50 Game Development course
