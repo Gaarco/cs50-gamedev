@@ -1,0 +1,1 @@
+# Assignment 0 of the CS50 course - Pong
