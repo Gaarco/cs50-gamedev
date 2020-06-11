@@ -3,7 +3,7 @@ Bird = Class{}
 local GRAVITY = 20
 local MAX_FALL_SPEED = 1200
 local JUMP_VELOCITY = -5
-local FLICKERING_DURATION = 3
+local FLICKERING_DURATION = 2
 
 local flickeringTimer = 0
 
@@ -13,6 +13,7 @@ function Bird:init()
     self.height = self.image:getHeight()
 
     self.immunity = false
+    self.draw = true
     self.lives = 3
 
     self.x = (VIRTUAL_WIDTH / 2) - (self.width / 2)
@@ -41,10 +42,11 @@ function Bird:update(dt)
     if self.immunity then
         flickeringTimer = flickeringTimer + dt
         if flickeringTimer < FLICKERING_DURATION then
-            flickering(dt)
+            self.draw = not self.draw
         else
             flickeringTimer = 0
             self.immunity = not self.immunity
+            self.draw = true
         end
     end
 
@@ -52,9 +54,7 @@ function Bird:update(dt)
 end
 
 function Bird:render()
-    love.graphics.draw(self.image, self.x, self.y)
-end
-
-local function flickering(dt)
-    -- TODO FLICKERING
+    if self.draw then
+        love.graphics.draw(self.image, self.x, self.y)
+    end
 end
