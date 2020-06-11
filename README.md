@@ -6,7 +6,7 @@ I also followed the [Hard Mode](https://forum.gameloop.it/d/449-gameloop50-segui
 - Assignment 0: Pong<br>
     [] AI controlled paddle<br>
     - GameLoop Hard Mode challenges:<br>
-        [x] Cool bouncing<br>
+        [X] Cool bouncing<br>
 
 - Assignment 1: Flappy Bird<br>
     [x] Pause feature<br>
