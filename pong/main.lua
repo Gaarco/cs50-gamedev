@@ -44,19 +44,24 @@ function love.load()
     player1Score = 0
     player2Score = 0
 
+    -- keep track of the serving player, used to decided in which direction the
+    -- ball should be thrown
     servingPlayer = 0
 
+    -- used to determine who won the game
     winningPlayer = 0
 
-    player1 = Paddle(10, 30, 5, 20)
-    player2 = Paddle(VIRTUAL_WIDTH - 10, VIRTUAL_HEIGHT - 30, 5 ,20)
+    numOfPlayers = 0
 
-    ball = Ball(VIRTUAL_WIDTH / 2 - 2, VIRTUAL_HEIGHT / 2 - 2, 4, 4)
+    player1 = Paddle(10, 30, 5, 20)
+    player2 = Paddle(VIRTUAL_WIDTH - 10, VIRTUAL_HEIGHT - 30, 5, 20)
+
+    ball = Ball(VIRTUAL_WIDTH / 2 - 2, VIRTUAL_HEIGHT / 2 - 2, 4)
 
     -- game state variable used to transition between different parts of the game
     -- (beginning, menus, main game, high score list, etc...)
     -- we will use this to determine behavior during render and update
-    gameState = "start"
+    gameState = "player_selection"
 end
 
 --[[
@@ -65,18 +70,31 @@ end
 function love.keypressed(key)
     if key == "escape" then
         love.event.quit()
+    elseif key == "2" then
+        if gameState == "player_selection" then
+            numOfPlayers = 2
+        end
+    elseif key == "1" then
+        if gameState == "player_selection" then
+            numOfPlayers = 1
+        end
     elseif key == "enter" or key == "return" then
-        if gameState == "start" then
+        if gameState == "player_selection" and numOfPlayers ~= 0 then
+            gameState = "start"
+        elseif gameState == "start" then
             gameState = "play"
         elseif gameState == "serve" then
             gameState = "play"
         else
+            numOfPlayers = 0
             servingPlayer = 0
             winningPlayer = 0
             player1Score = 0
             player2Score = 0
+            player1:reset(10, 30)
+            player2:reset(VIRTUAL_WIDTH - 10, VIRTUAL_HEIGHT - 30)
             ball:reset()
-            gameState = "start"
+            gameState = "player_selection"
         end
     end
 end
@@ -86,22 +104,32 @@ end
     provided by LOVE2D
 ]]
 function love.update(dt)
-    -- player 1 movement
-    if love.keyboard.isDown("w") then
-        player1.dy = -PADDLE_SPEED
-    elseif love.keyboard.isDown("s") then
-        player1.dy = PADDLE_SPEED
-    else
-        player1.dy = 0
-    end
+    if gameState == "play" then
+        -- player 1 movement
+        if love.keyboard.isDown("w") then
+            player1.dy = -PADDLE_SPEED
+        elseif love.keyboard.isDown("s") then
+            player1.dy = PADDLE_SPEED
+        else
+            player1.dy = 0
+        end
 
-    -- player 2 movement
-    if love.keyboard.isDown("up") then
-        player2.dy = -PADDLE_SPEED
-    elseif love.keyboard.isDown("down") then
-        player2.dy = PADDLE_SPEED
-    else
-        player2.dy = 0
+        if numOfPlayers == 2 then
+            -- player 2 movement without AI
+            if love.keyboard.isDown("up") then
+                player2.dy = -PADDLE_SPEED
+            elseif love.keyboard.isDown("down") then
+                player2.dy = PADDLE_SPEED
+            else
+                player2.dy = 0
+            end
+        else
+            -- movement controlled by AI
+            if ball.dx > 0 and ball.x > VIRTUAL_WIDTH / 3 then
+                -- do AI things
+                player2:autopilot(ball)
+            end
+        end
     end
 
     if gameState == "serve" then
@@ -162,6 +190,8 @@ function love.update(dt)
                 winningPlayer = 2
                 gameState = "done"
             else
+                player1:reset(10, 30)
+                player2:reset(VIRTUAL_WIDTH - 10, VIRTUAL_HEIGHT - 30)
                 ball:reset()
                 gameState = "serve"
             end
@@ -177,6 +207,8 @@ function love.update(dt)
                 winningPlayer = 1
                 gameState = "done"
             else
+                player1:reset(10, 30)
+                player2:reset(VIRTUAL_WIDTH - 10, VIRTUAL_HEIGHT - 30)
                 ball:reset()
                 gameState = "serve"
             end
@@ -196,9 +228,34 @@ function love.draw()
 
     love.graphics.clear(40 / 255, 45 / 255, 52 / 255, 1)
 
-    if gameState == "start" then
+    if gameState == "player_selection" then
         love.graphics.printf(
-            "Hello Start State!",
+            "Choose the number of players (1 or 2) and press Enter/Return",
+            0,
+            30,
+            VIRTUAL_WIDTH,
+            "center"
+        )
+        if numOfPlayers == 1 then
+            love.graphics.printf(
+                "Player vs CPU",
+                0,
+                50,
+                VIRTUAL_WIDTH,
+                "center"
+            )
+        elseif numOfPlayers == 2 then
+            love.graphics.printf(
+                "Player vs Player",
+                0,
+                50,
+                VIRTUAL_WIDTH,
+                "center"
+            )
+        end
+    elseif gameState == "start" then
+        love.graphics.printf(
+            "Press Enter/Return to start the game!",
             0,
             30,
             VIRTUAL_WIDTH,
@@ -225,7 +282,7 @@ function love.draw()
         )
         love.graphics.setFont(smallFont)
         love.graphics.printf(
-            "Hello Serve State!",
+            "Press Enter/Return to serve the ball!",
             0,
             30,
             VIRTUAL_WIDTH,
@@ -233,7 +290,7 @@ function love.draw()
         )
     elseif gameState == "play" then
         love.graphics.printf(
-            "Hello Play State!",
+            "Do your best.",
             0,
             30,
             VIRTUAL_WIDTH,

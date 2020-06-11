@@ -1,10 +1,9 @@
 Ball = Class{}
 
-function Ball:init(x, y, width, height)
+function Ball:init(x, y, size)
     self.x = x
     self.y = y
-    self.width = width
-    self.height = height
+    self.size = size
 
     -- these variables are for keeping track of our velocity on both
     -- X and Y axis, since the ball can move in 2 dimensions
@@ -33,19 +32,19 @@ end
 
 function Ball:render()
     love.graphics.setColor(255, 0, 0, 255)
-    love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
+    love.graphics.rectangle("fill", self.x, self.y, self.size, self.size)
 end
 
 function Ball:collides(collider)
     -- first check to see if the left edge of either is farther to the right
     -- than the right edge of the other
-    if self.x > collider.x + collider.width or collider.x > self.x + self.width then
+    if self.x > collider.x + collider.width or collider.x > self.x + self.size then
         return false
     end
 
     -- then check to see if the bottom edge of either is higher than the top
     -- edge of the other
-    if self.y > collider.y + collider.height or collider.y > self.y + self.height then
+    if self.y > collider.y + collider.height or collider.y > self.y + self.size then
         return false
     end
 
