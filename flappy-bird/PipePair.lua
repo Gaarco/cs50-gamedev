@@ -1,9 +1,9 @@
 PipePair = Class{}
 
-function PipePair:init(y)
+function PipePair:init(y, gapHeight)
     self.x = VIRTUAL_WIDTH
     self.y = y
-    self.gapHeight = math.random(70, 100)
+    self.gapHeight = gapHeight
 
     self.pipes = {
         ["upper"] = Pipe("top", self.y),

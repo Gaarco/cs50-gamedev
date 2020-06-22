@@ -67,6 +67,7 @@ function love.load()
     }
 
     sounds["music"]:setLooping(true)
+    sounds["music"]:setVolume(0.5)
     sounds["music"]:play()
 
     gStateMachine:change("title")

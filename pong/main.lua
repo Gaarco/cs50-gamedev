@@ -17,7 +17,7 @@ PADDLE_SPEED = 200
 ]]
 function love.load()
     love.window.setTitle("Pong")
-    
+
     math.randomseed(os.time())
 
     love.graphics.setDefaultFilter("nearest", "nearest")
@@ -144,10 +144,24 @@ function love.update(dt)
             ball.dx = -ball.dx * 1.03
             ball.x = player1.x + 5
 
-            if ball.dy < 0 then
-                ball.dy = -math.random(10, 150)
-            else
-                ball.dy = math.random(10, 150)
+            if ball.y + ball.size / 2 > player1.y + player1.height * 2 / 3 then
+                if ball.dy < 0 then
+                    ball.dy = -math.random(30, 100)
+                else
+                    ball.dy = math.random(30, 100)
+                end
+            elseif ball.y + ball.size / 2 > player1.y + player1.height * 1 / 3 then
+                if ball.dy < 0 then
+                    ball.dy = -math.random(0, 50)
+                else
+                    ball.dy = math.random(0, 50)
+                end
+            elseif ball.y + ball.size / 2 > player1.y then
+                if ball.dy < 0 then
+                    ball.dy = -math.random(30, 100)
+                else
+                    ball.dy = math.random(30, 100)
+                end
             end
 
             sounds["hit_paddle"]:play()
@@ -157,10 +171,24 @@ function love.update(dt)
             ball.dx = -ball.dx * 1.03
             ball.x = player2.x - 4
 
-            if ball.dy < 0 then
-                ball.dy = -math.random(10, 150)
-            else
-                ball.dy = math.random(10, 150)
+            if ball.y + ball.size / 2 > player2.y + player2.height * 2 / 3 then
+                if ball.dy < 0 then
+                    ball.dy = -math.random(30, 100)
+                else
+                    ball.dy = math.random(30, 100)
+                end
+            elseif ball.y + ball.size / 2 > player2.y + player2.height * 1 / 3 then
+                if ball.dy < 0 then
+                    ball.dy = -math.random(0, 50)
+                else
+                    ball.dy = math.random(0, 50)
+                end
+            elseif ball.y + ball.size / 2 > player2.y then
+                if ball.dy < 0 then
+                    ball.dy = -math.random(30, 100)
+                else
+                    ball.dy = math.random(30, 100)
+                end
             end
 
             sounds["hit_paddle"]:play()
@@ -218,7 +246,7 @@ function love.update(dt)
 
         ball:update(dt)
     end
-    
+
     player1:update(dt)
     player2:update(dt)
 end

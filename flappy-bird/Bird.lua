@@ -53,7 +53,7 @@ function Bird:update(dt)
     self.y = self.y + self.dy
 end
 
-function Bird:render()
+function Bird:render ()
     if self.draw then
         love.graphics.draw(self.image, self.x, self.y)
     end
