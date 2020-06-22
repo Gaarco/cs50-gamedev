@@ -5,7 +5,7 @@ I also followed the [Hard Mode](https://forum.gameloop.it/d/449-gameloop50-segui
 ## Assignments
 - [Assignment 0](./pong/): **Pong**<br>
 
-- Assignment 1: **Flappy Bird**<br>
+- Assignment 1: [**Flappy Bird**<br>](./flappy-bird/)
 
 - Assignment 2: **Breakout**<br>
 
