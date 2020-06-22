@@ -3,7 +3,7 @@ This repository is a collection of all my assignments for the [CS50 game develop
 I also followed the [Hard Mode](https://forum.gameloop.it/d/449-gameloop50-seguiamo-il-cs50-insieme-impariamo-a-sviluppare-videogiochi) challenges suggested by [GameLoop.it](https://gameloop.it/)
 
 ## Assignments
-- Assignment 0: **Pong**<br>
+- [Assignment 0](./pong/): **Pong**<br>
 
 - Assignment 1: **Flappy Bird**<br>
 
@@ -20,21 +20,9 @@ I also followed the [Hard Mode](https://forum.gameloop.it/d/449-gameloop50-segui
 - Assignment 7: **Pokémon**<br>
 
 - Assignment 8: **Helicopter Game 3D**<br>
-    - [ ] TODO<br>
-    - GameLoop Hard Mode challenges:<br>
-        - [ ] TODO<br>
 
 - Assignment 9: **Dreadhalls**<br>
-    - [ ] TODO<br>
-    - GameLoop Hard Mode challenges:<br>
-        - [ ] TODO<br>
 
 - Assignment 10: **Portal**<br>
-    - [ ] TODO<br>
-    - GameLoop Hard Mode challenges:<br>
-        - [ ] TODO<br>
 
 - Assignment 11: **Portal Problems**<br>
-    - [ ] TODO<br>
-    - GameLoop Hard Mode challenges:<br>
-        - [ ] TODO<br>
