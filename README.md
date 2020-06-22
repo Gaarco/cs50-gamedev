@@ -3,26 +3,26 @@ This repository is a collection of all my assignments for the [CS50 game develop
 I also followed the [Hard Mode](https://forum.gameloop.it/d/449-gameloop50-seguiamo-il-cs50-insieme-impariamo-a-sviluppare-videogiochi) challenges suggested by [GameLoop.it](https://gameloop.it/)
 
 ## Assignments
-- [Assignment 0](./pong/): **Pong**<br>
+- Assignment 0: [**Pong**](./pong/)
 
 - Assignment 1: [**Flappy Bird**<br>](./flappy-bird/)
 
-- Assignment 2: **Breakout**<br>
+- Assignment 2: [**Breakout**](./breakout/)<br>
 
-- Assignment 3: **Match 3**<br>
+- Assignment 3: [**Match 3**](./match3/)<br>
 
-- Assignment 4: **Super Mario Bros.**<br>
+- Assignment 4: [**Super Mario Bros.**](./super-mario-bros/)<br>
 
-- Assignment 5: **Legend of Zelda**<br>
+- Assignment 5: [**Legend of Zelda**](./zelda/)<br>
 
-- Assignment 6: **Angry Birds**<br>
+- Assignment 6: [**Angry Birds**](./angry-birds/)<br>
 
-- Assignment 7: **Pokémon**<br>
+- Assignment 7: [**Pokémon**](./pokemon/)<br>
 
-- Assignment 8: **Helicopter Game 3D**<br>
+- Assignment 8: [**Helicopter Game 3D**](./helicopter3D/)<br>
 
-- Assignment 9: **Dreadhalls**<br>
+- Assignment 9: [**Dreadhalls**](./dreadhalls/)<br>
 
-- Assignment 10: **Portal**<br>
+- Assignment 10: [**Portal**](./portal/)<br>
 
-- Assignment 11: **Portal Problems**<br>
+- Assignment 11: [**Portal Problems**](./portal/)<br>
