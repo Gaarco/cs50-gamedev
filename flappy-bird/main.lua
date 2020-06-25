@@ -68,7 +68,7 @@ function love.load()
 
     sounds["music"]:setLooping(true)
     sounds["music"]:setVolume(0.5)
-    sounds["music"]:play()
+    --sounds["music"]:play()
 
     gStateMachine:change("title")
 
@@ -117,5 +117,12 @@ function love.draw()
     gStateMachine:render()
     love.graphics.draw(ground, -groundScroll, VIRTUAL_HEIGHT - 16)
 
+    displayFPS()
+
     Push:finish()
+end
+
+function displayFPS()
+    love.graphics.setFont(smallFont)
+    love.graphics.print("FPS: " .. tostring(love.timer.getFPS()), VIRTUAL_HEIGHT - 50, 2)
 end
