@@ -31,21 +31,21 @@ function love.load()
     }
 
     gSounds = {
-        ["paddle-hit"] = love.audio.newSource("sounds/paddle_hit.wav"),
-        ["score"] = love.audio.newSource("sounds/score.wav"),
-        ["wall-hit"] = love.audio.newSource("sounds/wall_hit.wav"),
-        ["confirm"] = love.audio.newSource("sounds/confirm.wav"),
-        ["select"] = love.audio.newSource("sounds/select.wav"),
-        ["no-select"] = love.audio.newSource("sounds/no_select.wav"),
-        ["brick-hit-1"] = love.audio.newSource("sounds/brick_hit_1.wav"),
-        ["brick-hit-2"] = love.audio.newSource("sounds/brick_hit_2.wav"),
-        ["hurt"] = love.audio.newSource("sounds/hurt.wav"),
-        ["victory"] = love.audio.newSource("sounds/victory.wav"),
-        ["recover"] = love.audio.newSource("sounds/recover.wav"),
-        ["high-score"] = love.audio.newSource("sounds/high_score.wav"),
-        ["pause"] = love.audio.newSource("sounds/pause.wav"),
+        ["paddle-hit"] = love.audio.newSource("sounds/paddle_hit.wav", "static"),
+        ["score"] = love.audio.newSource("sounds/score.wav", "static"),
+        ["wall-hit"] = love.audio.newSource("sounds/wall_hit.wav", "static"),
+        ["confirm"] = love.audio.newSource("sounds/confirm.wav", "static"),
+        ["select"] = love.audio.newSource("sounds/select.wav", "static"),
+        ["no-select"] = love.audio.newSource("sounds/no_select.wav", "static"),
+        ["brick-hit-1"] = love.audio.newSource("sounds/brick_hit_1.wav", "static"),
+        ["brick-hit-2"] = love.audio.newSource("sounds/brick_hit_2.wav", "static"),
+        ["hurt"] = love.audio.newSource("sounds/hurt.wav", "static"),
+        ["victory"] = love.audio.newSource("sounds/victory.wav", "static"),
+        ["recover"] = love.audio.newSource("sounds/recover.wav", "static"),
+        ["high-score"] = love.audio.newSource("sounds/high_score.wav", "static"),
+        ["pause"] = love.audio.newSource("sounds/pause.wav", "static"),
 
-        ["music"] = love.audio.newSource("sounds/music.wav"),
+        ["music"] = love.audio.newSource("sounds/music.wav", "static"),
     }
 
     gStateMachine = StateMachine {
@@ -57,7 +57,7 @@ function love.load()
     love.keyboard.keysPressed = {}
 end
 
-function love.update()
+function love.update(dt)
     gStateMachine:update(dt)
 
     love.keyboard.keysPressed = {}
@@ -90,11 +90,15 @@ function love.draw()
 
     displayFPS()
 
-    Push:apply("stop")
+    Push:apply("end")
 end
 
 function displayFPS()
     love.graphics.setFont(gFonts["small"])
     love.graphics.setColor(0, 255, 0, 255)
     love.graphics.print("FPS: " .. tostring(love.timer.getFPS()), 5, 5)
+end
+
+function love.resize(width ,height)
+    Push:resize(width, height)
 end
