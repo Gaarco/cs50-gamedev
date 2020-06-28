@@ -30,6 +30,10 @@ function love.load()
         ["particle"] = love.graphics.newImage("graphics/particle.png"),
     }
 
+    gFrames = {
+        ["paddles"] = GenerateQuadsPaddles(gTextures["main"])
+    }
+
     gSounds = {
         ["paddle-hit"] = love.audio.newSource("sounds/paddle_hit.wav", "static"),
         ["score"] = love.audio.newSource("sounds/score.wav", "static"),
