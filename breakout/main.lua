@@ -32,7 +32,8 @@ function love.load()
 
     gFrames = {
         ["paddles"] = GenerateQuadsPaddles(gTextures["main"]),
-        ["balls"] = GenerateQuadsBalls(gTextures["main"])
+        ["balls"] = GenerateQuadsBalls(gTextures["main"]),
+        ["bricks"] = GenerateQuadsBricks(gTextures["main"])
     }
 
     gSounds = {
