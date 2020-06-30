@@ -31,7 +31,8 @@ function love.load()
     }
 
     gFrames = {
-        ["paddles"] = GenerateQuadsPaddles(gTextures["main"])
+        ["paddles"] = GenerateQuadsPaddles(gTextures["main"]),
+        ["balls"] = GenerateQuadsBalls(gTextures["main"])
     }
 
     gSounds = {
@@ -53,7 +54,8 @@ function love.load()
     }
 
     gStateMachine = StateMachine {
-        ["start"] = function() return StartState() end
+        ["start"] = function() return StartState() end,
+        ["play"] = function() return PlayState() end
     }
 
     gStateMachine:change("start")

@@ -10,6 +10,8 @@ function Paddle:init()
     self.height = 16
 
     self.skin = 2
+
+    self.size = 2
 end
 
 function Paddle:update(dt)
