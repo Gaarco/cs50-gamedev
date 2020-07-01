@@ -5,8 +5,8 @@ function PlayState:init()
 
     self.ball = Ball(math.random(7))
 
-    self.ball.dx = math.random(-200, 200)
-    self.ball.dy = math.random(-50, 60)
+    self.ball.dx = math.random(-100, 100)
+    self.ball.dy = math.random(-50, 50)
 
     self.ball.x = VIRTUAL_WIDTH / 2 - 4
     self.ball.y = VIRTUAL_HEIGHT - 42
@@ -36,6 +36,13 @@ function PlayState:update(dt)
     if self.ball:collides(self.paddle) then
         self.ball.y = self.paddle.y - 8
         self.ball.dy = -self.ball.dy
+
+        if self.ball.x < self.paddle.x + (self.paddle.width / 2) and self.paddle.dx < 0 then
+            self.ball.dx = -50 + -(8 * (self.paddle.x + self.paddle.width / 2 - self.ball.x))
+        elseif self.ball.x > self.paddle.x + (self.paddle.width / 2) and self.paddle.dx > 0 then
+            self.ball.dx = 50 + (8 * math.abs(self.paddle.x + self.paddle.width / 2 - self.ball.x))
+        end
+
         gSounds["paddle-hit"]:play()
     end
 
@@ -44,6 +51,22 @@ function PlayState:update(dt)
         if brick.inPlay and self.ball:collides(brick) then
             -- trigger the brick's hit function, which removes it from play
             brick:hit()
+
+            if self.ball.x + 2 < brick.x and self.ball.dx > 0 then
+                self.ball.dx = -self.ball.dx
+                self.ball.x = brick.x - 8
+            elseif self.ball.x + 6 > brick.x + brick.width and self.ball.dx < 0 then
+                self.ball.dx = -self.ball.dx
+                self.ball.x = brick.x + 32
+            elseif self.ball.y < brick.y then
+                self.ball.dy = -self.ball.dy
+                self.ball.y = brick.y - 8
+            else
+                self.ball.dy = -self.ball.dy
+                self.ball.y = brick.y + 16
+            end
+
+            self.ball.dy = self.ball.dy * 1.03
         end
     end
 
