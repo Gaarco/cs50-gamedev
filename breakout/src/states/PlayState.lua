@@ -5,6 +5,7 @@ function PlayState:enter(params)
   self.bricks = params.bricks
   self.health = params.health
   self.score = params.score
+  self.highScores = params.highScores
   self.ball = params.ball
   self.level = params.level
 
@@ -50,6 +51,7 @@ function PlayState:update(dt)
     if self.health == 0 then
       gStateMachine:change("game-over", {
         score = self.score,
+        highScores = self.highScores,
         level = self.level
       })
     else
@@ -58,6 +60,7 @@ function PlayState:update(dt)
         bricks = self.bricks,
         health = self.health,
         score = self.score,
+        highScores = self.highScores,
         level = self.level
       })
     end

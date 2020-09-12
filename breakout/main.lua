@@ -31,6 +31,7 @@ function love.load()
     }
 
     gFrames = {
+        ["arrows"] = GenerateQuads(gTextures["arrows"], 24, 24),
         ["paddles"] = GenerateQuadsPaddles(gTextures["main"]),
         ["balls"] = GenerateQuadsBalls(gTextures["main"]),
         ["bricks"] = GenerateQuadsBricks(gTextures["main"]),
@@ -60,10 +61,15 @@ function love.load()
         ["play"] = function() return PlayState() end,
         ["serve"] = function() return ServeState() end,
         ["victory"] = function() return VictoryState() end,
-        ["game-over"] = function() return GameOverState() end
+        ['high-scores'] = function() return HighScoreState() end,
+        ["game-over"] = function() return GameOverState() end,
+        ['enter-high-score'] = function() return EnterHighScoreState() end,
+        ["paddle-select"] = function() return PaddleSelectState() end
     }
 
-    gStateMachine:change("start")
+    gStateMachine:change("start", {
+        highScores = loadHighScores()
+    })
 
     love.keyboard.keysPressed = {}
 end
@@ -71,7 +77,7 @@ end
 function loadHighScores()
     love.filesystem.setIdentity("breakout")
 
-    if not love.filesystem.exists("breakout.lst") then
+    if not love.filesystem.getInfo("breakout.lst") then
         local scores = ""
         for i = 10, 1, -1 do
             scores = scores .. "CT0\n"
@@ -97,7 +103,7 @@ function loadHighScores()
             if name then
                 scores[counter].name = string.sub(line, 1, 3)
             else
-                socres[counter].score = tonumber(line)
+                scores[counter].score = tonumber(line)
                 counter = counter + 1
             end
             name = not name
@@ -162,7 +168,7 @@ end
 
 function displayFPS()
     love.graphics.setFont(gFonts["small"])
-    love.graphics.setColor(0, 255, 0, 255)
+    love.graphics.setColor(0, 1, 0, 1)
     love.graphics.print("FPS: " .. tostring(love.timer.getFPS()), 5, 5)
 end
 
