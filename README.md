@@ -9,6 +9,8 @@ I also followed the [Hard Mode](https://forum.gameloop.it/d/449-gameloop50-segui
 
 - Assignment 2: [**Breakout**](./breakout/)<br>
 
+From this point forward I just modify the cs50 code, I'm not going to write code step by step following the videos, it's a lot of work and not that useful.
+
 - Assignment 3: [**Match 3**](./match3/)<br>
 
 - Assignment 4: [**Super Mario Bros.**](./super-mario-bros/)<br>
