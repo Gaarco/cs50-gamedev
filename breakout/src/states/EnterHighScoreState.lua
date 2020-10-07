@@ -1,6 +1,5 @@
 EnterHighScoreState = Class{__include = BaseState}
 
-
 local chars = {
     [1] = 65,
     [2] = 65,
@@ -52,6 +51,11 @@ function EnterHighScoreState:update(dt)
     end
 
     if love.keyboard.wasPressed('up') then
+        chars[highlightedChar] = chars[highlightedChar] + 1
+        if chars[highlightedChar] > 90 then
+            chars[highlightedChar] = 65
+        end
+    elseif love.keyboard.wasPressed('down') then
         chars[highlightedChar] = chars[highlightedChar] - 1
         if chars[highlightedChar] < 65 then
             chars[highlightedChar] = 90

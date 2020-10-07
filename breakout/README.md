@@ -1,5 +1,5 @@
 # Assignment 2 of the CS50 course - Breakout
-- [ ] Powerup<br>
+- [ ] Extra Balls, spawns 2 more balls<br>
 - [ ] Grow and shrink the paddle when the player gains enough points<br>
 - [ ] Add a locked brick that will only open when the player collects another power up<br>
 

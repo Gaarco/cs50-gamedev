@@ -1,17 +1,24 @@
 PlayState = Class{__includes = BaseState}
 
+local blocksHit = 14
+local powerupActive = false
+
 function PlayState:enter(params)
     self.paddle = params.paddle
     self.bricks = params.bricks
     self.health = params.health
     self.score = params.score
     self.highScores = params.highScores
-    self.ball = params.ball
     self.level = params.level
+    self.balls = {}
+    self.powerups = {}
+    table.insert(self.balls, params.ball)
 
     -- give ball random starting velocity
-    self.ball.dx = math.random(-200, 200)
-    self.ball.dy = math.random(-50, -60)
+    for k, ball in pairs(self.balls) do
+        ball.dx = math.random(-200, 200)
+        ball.dy = math.random(-50, -60)
+    end
 end
 
 function PlayState:update(dt)
@@ -29,89 +36,120 @@ function PlayState:update(dt)
     end
 
     self.paddle:update(dt)
-    self.ball:update(dt)
 
-    if self.ball:collides(self.paddle) then
-        self.ball.y = self.paddle.y - 8
-        self.ball.dy = -self.ball.dy
-
-        if self.ball.x < self.paddle.x + (self.paddle.width / 2) and self.paddle.dx < 0 then
-            self.ball.dx = -50 + -(8 * (self.paddle.x + self.paddle.width / 2 - self.ball.x))
-        elseif self.ball.x > self.paddle.x + (self.paddle.width / 2) and self.paddle.dx > 0 then
-            self.ball.dx = 50 + (8 * math.abs(self.paddle.x + self.paddle.width / 2 - self.ball.x))
-        end
-
-        gSounds["paddle-hit"]:play()
-    end
-
-    if self.ball.y >= VIRTUAL_HEIGHT then
-        self.health = self.health - 1
-        gSounds["hurt"]:play()
-
-        if self.health == 0 then
-            gStateMachine:change("game-over", {
-                score = self.score,
-                highScores = self.highScores,
-                level = self.level
-            })
-        else
-            gStateMachine:change("serve", {
-                paddle = self.paddle,
-                bricks = self.bricks,
-                health = self.health,
-                score = self.score,
-                highScores = self.highScores,
-                level = self.level
-            })
+    for k, powerup in pairs(self.powerups) do
+        powerup:update(dt)
+        print(tostring(k) .. " powerup: " .. tostring(powerup.x) .. " " .. tostring(powerup.y)
+            .. " active: " .. tostring(powerup.active))
+        if not powerup.active then
+            powerupActive = false
         end
     end
 
-    for k, brick in pairs(self.bricks) do
-        -- only check collision if we're in play
-        if brick.inPlay and self.ball:collides(brick) then
-            -- trigger the brick's hit function, which removes it from play
-            self.score = self.score + (brick.tier * 200 + brick.color * 25)
+    for k, powerup in pairs(self.powerups) do
+        if powerup:collides(self.paddle) then
+            table.remove(self.powerups, k)
+        end
+    end
 
-            brick:hit()
+    for k, ball in pairs(self.balls) do
+        ball:update(dt)
+    end
 
-            if self:checkVictory() then
-                gSounds["victory"]:play()
+    for k, ball in pairs(self.balls) do
+        if ball:collides(self.paddle) then
+            ball.y = self.paddle.y - 8
+            ball.dy = -ball.dy
 
-                gStateMachine:change("victory", {
-                    level = self.level,
+            if ball.x < self.paddle.x + (self.paddle.width / 2) and self.paddle.dx < 0 then
+                ball.dx = -50 + -(8 * (self.paddle.x + self.paddle.width / 2 - ball.x))
+            elseif ball.x > self.paddle.x + (self.paddle.width / 2) and self.paddle.dx > 0 then
+                ball.dx = 50 + (8 * math.abs(self.paddle.x + self.paddle.width / 2 - ball.x))
+            end
+
+            gSounds["paddle-hit"]:play()
+        end
+
+        if ball.y >= VIRTUAL_HEIGHT then
+            self.health = self.health - 1
+            gSounds["hurt"]:play()
+
+            if self.health == 0 then
+                gStateMachine:change("game-over", {
+                    score = self.score,
+                    highScores = self.highScores,
+                    level = self.level
+                })
+            else
+                
+                gStateMachine:change("serve", {
                     paddle = self.paddle,
+                    bricks = self.bricks,
                     health = self.health,
                     score = self.score,
                     highScores = self.highScores,
-                    ball = self.ball
+                    level = self.level
                 })
             end
-
-
-            if self.ball.x + 2 < brick.x and self.ball.dx > 0 then
-                self.ball.dx = -self.ball.dx
-                self.ball.x = brick.x - 8
-            elseif self.ball.x + 6 > brick.x + brick.width and self.ball.dx < 0 then
-                self.ball.dx = -self.ball.dx
-                self.ball.x = brick.x + 32
-            elseif self.ball.y < brick.y then
-                self.ball.dy = -self.ball.dy
-                self.ball.y = brick.y - 8
-            else
-                self.ball.dy = -self.ball.dy
-                self.ball.y = brick.y + 16
-            end
-
-            self.ball.dy = self.ball.dy * 1.03
         end
-    end
 
-    for k, brick in pairs(self.bricks) do
-        brick.psystem:update(dt)
-    end
+        for k, brick in pairs(self.bricks) do
+            -- only check collision if we're in play
+            if brick.inPlay and ball:collides(brick) then
+                -- trigger the brick's hit function, which removes it from play
+                self.score = self.score + (brick.tier * 200 + brick.color * 25)
 
-    if love.keyboard.wasPressed("escape") then
-        love.event.quit()
+                brick:hit()
+                blocksHit = blocksHit + 1
+                
+                -- TODO debug
+                print("blocks hit: " .. tostring(blocksHit))
+                print("powerup active: " .. tostring(powerupActive))
+
+                if self:checkVictory() then
+                    gSounds["victory"]:play()
+
+                    gStateMachine:change("victory", {
+                        level = self.level,
+                        paddle = self.paddle,
+                        health = self.health,
+                        score = self.score,
+                        highScores = self.highScores,
+                        ball = self.balls[1]
+                    })
+                end
+
+
+                if ball.x + 2 < brick.x and ball.dx > 0 then
+                    ball.dx = -ball.dx
+                    ball.x = brick.x - 8
+                elseif ball.x + 6 > brick.x + brick.width and ball.dx < 0 then
+                    ball.dx = -ball.dx
+                    ball.x = brick.x + 32
+                elseif ball.y < brick.y then
+                    ball.dy = -ball.dy
+                    ball.y = brick.y - 8
+                else
+                    ball.dy = -ball.dy
+                    ball.y = brick.y + 16
+                end
+
+                ball.dy = ball.dy * 1.03
+            end
+        end
+
+        for k, brick in pairs(self.bricks) do
+            brick.psystem:update(dt)
+        end
+
+        if blocksHit >= 15 and not powerupActive then
+            table.insert(self.powerups, Powerup(Powerup.TYPES["DOUBLE_BALLS"]))
+            powerupActive = true
+        end
+
+        if love.keyboard.wasPressed("escape") then
+            love.event.quit()
+        end
     end
 end
 
@@ -135,7 +173,14 @@ function PlayState:render()
     end
 
     self.paddle:render()
-    self.ball:render()
+
+    for k, powerup in pairs(self.powerups) do
+        powerup:render()
+    end
+
+    for k, ball in pairs(self.balls) do
+        ball:render()
+    end
 
     renderScore(self.score)
     renderHealth(self.health)

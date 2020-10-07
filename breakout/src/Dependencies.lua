@@ -1,5 +1,6 @@
 Push = require "lib/push"
 Class = require "lib/class"
+love = require "love"
 
 require "src/constants"
 
@@ -9,6 +10,7 @@ require "src/LevelMaker"
 require "src/Paddle"
 require "src/Ball"
 require "src/Brick"
+require "src/Powerup"
 
 require "src/StateMachine"
 require "src/states/BaseState"

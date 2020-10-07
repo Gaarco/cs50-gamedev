@@ -24,7 +24,7 @@ function GameOverState:update(dt)
             gStateMachine:change(("enter-high-score"), {
                 highScores = self.highScores,
                 score = self.score,
-                scoreIndex = self.scoreIndex
+                scoreIndex = highScoreIndex
             })
         else
             gStateMachine:change(("start"), {
